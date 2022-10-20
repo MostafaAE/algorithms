@@ -34,6 +34,57 @@ void count_sort(vector<int> &nums)
     }
 }
 
+/*
+ * This count sort implementation will make the algorithm stable but will cause the following:
+ *
+ *  1) More memory writes
+ *      count[i] += count[i - 1];  and count[array[i]] -= 1;
+ *
+ *  2) Bad Locality of reference
+ *
+ *  3) More memory vector<int> output(size);
+ *      However, this is used to create a stable order algorithm!
+ *      But a must to process backward
+ *          for (int i = size - 1; i >= 0; --i)
+ *
+ * Complexity:
+ * Time Complexity : O(n+m)
+ * Space Complexity : O(n+m)
+ * where m is the max value in the array
+ */
+vector<int> count_sort_v2(const vector<int> &array)
+{
+    int size = array.size();
+    int mxVal = array[0];
+
+    // Find the largest element of the array
+    // O(n)
+    for (int i = 1; i < size; ++i)
+        if (array[i] > mxVal)
+            mxVal = array[i];
+
+    // Compute Frequency of each element in the array
+    // O(n)
+    vector<int> count(mxVal + 1); // zeros
+    for (int i = 0; i < size; ++i)
+        count[array[i]] += 1;
+
+    // Accumulate the counting
+    // O(m)
+    for (int i = 1; i <= mxVal; ++i)
+        count[i] += count[i - 1];
+
+    // Find the index and put the number
+    // O(n)
+    vector<int> output(size);
+    for (int i = size - 1; i >= 0; --i)
+    {
+        output[count[array[i]] - 1] = array[i];
+        count[array[i]] -= 1;
+    }
+    return output;
+}
+
 void print_vec(const vector<int> &nums)
 {
     for (int num : nums)

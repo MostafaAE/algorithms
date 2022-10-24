@@ -49,6 +49,24 @@ int lower_bound(vector<int> &nums, int target)
     return start;
 }
 
+int upper_bound(vector<int> &nums, int target)
+{
+    int start{}, end{(int)nums.size() - 1};
+
+    while (start <= end)
+    {
+        // prevent overflow
+        int mid = start + (end - start) / 2;
+
+        if (target < nums[mid])
+            end = mid - 1;
+
+        else
+            start = mid + 1;
+    }
+
+    return start;
+}
 int main()
 {
     vector<int> nums{0, 5, 13, 19, 22, 41, 55, 68, 72, 81, 98};
@@ -62,6 +80,10 @@ int main()
     cout << lower_bound(nums, 22) << endl;  // 4
     cout << lower_bound(nums, 20) << endl;  // 4
     cout << lower_bound(nums, 100) << endl; // 11
+
+    cout << upper_bound(nums, 22) << endl; // 5
+    cout << upper_bound(nums, 20) << endl; // 4
+    cout << upper_bound(nums, 98) << endl; // 11
 
     // must see it, otherwise RTE
     cout << "\n\nNO RTE\n";

@@ -27,7 +27,7 @@ void print_adjaceny_list(GRAPH &graph)
     }
 }
 
-vector<int> bfs(GRAPH &graph, int start)
+vector<int> bfs_v1(GRAPH &graph, int start)
 {
     vector<int> len((int)graph.size(), OO);
     queue<pair<int, int>> q;
@@ -53,6 +53,39 @@ vector<int> bfs(GRAPH &graph, int start)
     return len;
 }
 
+vector<int> bfs_v2(GRAPH &graph, int start)
+{
+    vector<int> len((int)graph.size(), OO);
+    queue<int> q;
+
+    q.push(start);
+    len[start] = 0;
+    int level = 0;
+
+    while (!q.empty())
+    {
+        int sz = q.size();
+
+        while (sz--)
+        {
+            int cur = q.front();
+            q.pop();
+
+            for (int neighbour : graph[cur])
+            {
+                // not visited yet
+                if (len[neighbour] == OO)
+                {
+                    q.push(neighbour);
+                    len[neighbour] = level + 1;
+                }
+            }
+        }
+        level++;
+    }
+    return len;
+}
+
 int main()
 {
     int nodes, edges;
@@ -67,7 +100,7 @@ int main()
         add_undirected_edge(graph, from, to);
     }
 
-    vector<int> bfs_traversal = bfs(graph, 1);
+    vector<int> bfs_traversal = bfs_v2(graph, 1);
 
     for (int node : bfs_traversal)
         cout << node << " ";

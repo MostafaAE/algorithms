@@ -9,7 +9,7 @@ int memory[MAX][MAX];
 
 /*
  * Approach:
- * Dynamic Programming Memoization
+ * Dynamic Programming Memoization (pick or leave approach)
  *
  * Complexity:
  * Time Complexity : O(N^2)
